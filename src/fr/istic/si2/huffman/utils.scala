@@ -12,15 +12,14 @@ object Utils {
    * @return la chaîne de 0 et 1 où chaque bit de l est représenté par 0 ou 1, dans l'ordre
    */
   def listBitToString(l: List[Bit]): String = {
-    @scala.annotation.tailrec
-    def f(l: List[Bit], acc: String): String = {
+    def f(l: List[Bit], acc: List[Char]): List[Char] = {
       l match {
         case Nil          => acc
-        case One :: rest  => f(rest, acc + "1")
-        case Zero :: rest => f(rest, acc + "0")
+        case One :: rest  => f(rest, '1' :: acc)
+        case Zero :: rest => f(rest, '0' :: acc)
       }
     }
-    f(l, "")
+    f(l, Nil).reverse.mkString("")
   }
 
   /**

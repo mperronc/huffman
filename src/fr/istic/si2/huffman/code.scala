@@ -55,7 +55,9 @@ object ConstructionCode {
    *         c est un caractère apparaissant dans s, et f est sa fréquence
    *         d'apparition dans s.
    */
-  def analyseFrequences(s: String): List[(Char, Double)] = compteOccurences(s.toList).toList.map({case (c, n) => (c, n / s.length.toDouble)})
+  def analyseFrequences(s: String): List[(Char, Double)] = {
+    compteOccurences(s.toList).toList.map({case (c, n) => (c, n / s.length.toDouble)})
+  }
   
   /**
    * @param lc Une liste de caractères

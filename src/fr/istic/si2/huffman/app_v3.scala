@@ -34,7 +34,9 @@ object HuffmanApp3 extends App {
     println("Taille du texte original : " + texte.length() * 16 + " bits. (1 caractère = 16 bits)")
     println("Taille du texte encodé : " + texteEncode.length() + " bits.")
 
+    println("Décodage du texte en cours...")
     val texteDecode = decode(texteEncode)
+    println("Termniné")
     //println("Le texte encodé, une fois décodé est :\n")
     //println(texteDecode + "\n")
 
@@ -62,7 +64,5 @@ object HuffmanApp3 extends App {
       }
     }
   }
-
   boucleInteraction()
-
 }

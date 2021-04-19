@@ -41,16 +41,19 @@ object Decodage {
    * @return la chaîne correspondant au décodage de l, selon h, si elle existe
    */
   def decode(l: List[Bit], h: Huffman): Option[String] = {
-    def aux(l: List[Bit], h: Huffman, acc: String): Option[String] = {
+    def aux(l: List[Bit], h: Huffman, acc: List[Char]): Option[List[Char]] = {
       l match {
         case Nil => Some(acc)
         case b :: tail => decodeSymbol(h, l) match {
-          case (Some(c), suffix) => aux(suffix, h, acc + c)
+          case (Some(c), suffix) => aux(suffix, h, c :: acc)
           case (None, _) => None
         }
       }
     }
-    aux(l, h, "")
+    aux(l, h, Nil) match {
+      case Some(lc) => Some(lc.reverse.mkString(""))
+      case None => None
+    }
   }
 
   /**

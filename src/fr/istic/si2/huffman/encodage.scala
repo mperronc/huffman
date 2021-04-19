@@ -53,7 +53,9 @@ object Encodage {
    * @return l'encodage de s, selon h, en une liste de bits.
    *         (concaténation de l'encodage de chaque caractère de s selon h)
    */
-  def encode(s: String, h: Huffman): List[Bit] = encodeList(s.toList, h)
+  def encode(s: String, h: Huffman): List[Bit] = {
+    encodeList(s.toList, h)
+  }
 
   /**
    * @param h un arbre de Huffman
@@ -61,7 +63,6 @@ object Encodage {
    *         Les caractères encodables avec h sont représentés dans leur encodage binaire 16 bits.
    */
   def descriptionHuffman(h: Huffman): String = {
-    
     h match {
       case Noeud(_, h1, h2) => "1" + descriptionHuffman(h1) + descriptionHuffman(h2)
       case Feuille(_, c)    => "0" + vers16Bits(c.toString())
