@@ -44,9 +44,7 @@ object ConstructionCode {
    * @param freqs une liste de couples caractère/fréquence
    * @return l'arbre de code de Huffman correspondant à freqs
    */
-  def codeHuffman(freqs: List[(Char, Double)]): Huffman = {
-    fusion(initHuffman(freqs))
-  }
+  def codeHuffman(freqs: List[(Char, Double)]): Huffman = fusion(initHuffman(freqs))
 
   /**
    * @param s une chaîne de caractères
@@ -55,9 +53,8 @@ object ConstructionCode {
    *         c est un caractère apparaissant dans s, et f est sa fréquence
    *         d'apparition dans s.
    */
-  def analyseFrequences(s: String): List[(Char, Double)] = {
+  def analyseFrequences(s: String): List[(Char, Double)] = 
     compteOccurences(s.toList).toList.map({case (c, n) => (c, n / s.length.toDouble)})
-  }
   
   /**
    * @param lc Une liste de caractères

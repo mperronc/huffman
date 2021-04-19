@@ -44,8 +44,6 @@ class TestsEncodage {
       One, One, One), encode("fbe", figure1))
     assertEquals(Nil, encode("zyx", figure1))
     assertEquals(List(Zero, One, Zero, One, One, Zero, One), encode("ctg", figure1))
-    
-    assertEquals(true, encode(("abcdefg" * 100000), figure1).length > 1)
   }
 
   @Test
