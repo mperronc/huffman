@@ -1,3 +1,9 @@
+/**
+ * Matthias PERRONCEL
+ * Tudwall CREZE
+ * Groupe MA1-A
+ */
+
 package fr.istic.si2.huffman
 
 import Encodage._

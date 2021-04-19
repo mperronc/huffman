@@ -1,3 +1,9 @@
+/**
+ * Matthias PERRONCEL
+ * Tudwall CREZE
+ * Groupe MA1-A
+ */
+
 package fr.istic.si2.test.huffman
 
 import org.junit.Test
