@@ -12,45 +12,45 @@ object Decodage {
 
   /**
    * @param h un arbre de Huffman
-   * @param l une liste de bits
+   * @param lb une liste de bits
    * @return caractère correspondant au décodage de l selon h
    *          si l est un chemin valide de h
    */
-  def decodeSymbolv0(h: Huffman, l: List[Bit]): Option[Char] = {
-    (h, l) match {
+  def decodeSymbolv0(h: Huffman, lb: List[Bit]): Option[Char] = {
+    (h, lb) match {
       case (Feuille(_, c), Nil)             => Some(c)
-      case (Noeud(_, h1, h2), Zero :: tail) => decodeSymbolv0(h1, tail)
-      case (Noeud(_, h1, h2), One :: tail)  => decodeSymbolv0(h2, tail)
+      case (Noeud(_, h1, h2), Zero :: rem) => decodeSymbolv0(h1, rem)
+      case (Noeud(_, h1, h2), One :: rem)  => decodeSymbolv0(h2, rem)
       case _                                => None
     }
   }
 
   /**
    * @param h un arbre de Huffman
-   * @param l une liste de bits
+   * @param lb une liste de bits
    * @return un tuple de taille 2
    *         - première composante : caractère correspondant au décodage selon h d'un préfixe de l
    *         - deuxième composante : la liste des bits restant à décoder
    */
-  def decodeSymbol(h: Huffman, l: List[Bit]): (Option[Char], List[Bit]) = {
-    (h, l) match {
+  def decodeSymbol(h: Huffman, lb: List[Bit]): (Option[Char], List[Bit]) = {
+    (h, lb) match {
       case (Feuille(_, c), l)               => (Some(c), l)
-      case (Noeud(_, _, _), Nil)            => (None, l)
-      case (Noeud(_, h1, h2), Zero :: tail) => decodeSymbol(h1, tail)
-      case (Noeud(_, h1, h2), One :: tail)  => decodeSymbol(h2, tail)
+      case (Noeud(_, _, _), Nil)            => (None, lb)
+      case (Noeud(_, h1, h2), Zero :: rem) => decodeSymbol(h1, rem)
+      case (Noeud(_, h1, h2), One :: rem)  => decodeSymbol(h2, rem)
     }
   }
 
   /**
-   * @param l une liste de bits
+   * @param lb une liste de bits
    * @param h un arbre de Huffman
    * @return la chaîne correspondant au décodage de l, selon h, si elle existe
    */
-  def decode(l: List[Bit], h: Huffman): Option[String] = {
-    l match {
+  def decode(lb: List[Bit], h: Huffman): Option[String] = {
+    lb match {
       case Nil => Some("")
-      case b :: tail => {
-        decodeSymbol(h, l) match {
+      case b :: rem => {
+        decodeSymbol(h, lb) match {
           case (Some(c), suffix) => {
             decode(suffix, h) match {
               case Some(s) => Some(c + s)
@@ -64,22 +64,23 @@ object Decodage {
   }
 
   /**
-   * @param l une liste de bits décrivant la représentation binaire d'un arbre de Huffman
+   * @param lb une liste de bits décrivant la représentation binaire d'un arbre de Huffman
    * @return Si la liste de bits a pu etre lue, un tuple de taille 2 comprenant :
    *         - l'arbre de code de Huffman reconstruit à partir du début de l
    *         - le reste de la liste l, après la représentation de l'arbre de Huffman
    */
-  def lireDescription(l: List[Bit]): (Huffman, List[Bit]) = {
-    l match {
+  def lireDescription(lb: List[Bit]): (Huffman, List[Bit]) = {
+    lb match {
       case Zero :: rem => {
         val c = toChar(listBitToString(take(16, rem)))
-        (Feuille(0, c), drop(17, l))
+        (Feuille(0, c), drop(17, lb))
       }
       case One :: rem => {
         val (f1, rest1) = lireDescription(rem)
         val (f2, rest2) = lireDescription(rest1)
         (Noeud(0, f1, f2), rest2)
       }
+      case _ => throw new Exception("Description illisible")
     }
   }
 

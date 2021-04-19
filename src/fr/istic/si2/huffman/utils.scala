@@ -42,19 +42,18 @@ object Utils {
   }
 
   /**
-   * @param l une liste de bits
+   * @param lb une liste de bits
    * @return la chaîne de 0 et 1 où chaque bit de l est représenté par 0 ou 1, dans l'ordre
    */
-  def listBitToString(l: List[Bit]): String = {
-    @scala.annotation.tailrec
-    def f(l: List[Bit], acc: String): String = {
-      l match {
+  def listBitToString(lb: List[Bit]): String = {
+    def aux(lb: List[Bit], acc: String): String = {
+      lb match {
         case Nil          => acc
-        case One :: rest  => f(rest, acc + "1")
-        case Zero :: rest => f(rest, acc + "0")
+        case One :: rem  => aux(rem, acc + "1")
+        case Zero :: rem => aux(rem, acc + "0")
       }
     }
-    f(l, "")
+    aux(lb, "")
   }
 
   /**

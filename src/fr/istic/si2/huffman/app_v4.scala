@@ -10,19 +10,21 @@ import Encodage._
 import Decodage._
 import Utils._
 import ConstructionCode._
+import FonctionsV4._
 
 import scala.io.StdIn._
 import java.io.FileNotFoundException
 
+
 /**
- * Application principale V3 : avec transmission du code
+ * Application principale V4 utilisant les fonctions optimisées
  */
-object HuffmanApp3 extends App {
+object HuffmanApp4 extends App {
 
   /**
-   * Boucle d'interaction principale de l'App V3
+   * Boucle d'interaction principale de l'App V4
    */
-  def appV3(): Unit = {
+  def appV4(): Unit = {
     demanderMode() match {
       case ModeCodage   => modeCodage()
       case ModeDecodage => modeDecodage()
@@ -31,7 +33,7 @@ object HuffmanApp3 extends App {
     println("Encore une fois ? [Y/n]")
     val ans = readChar()
     if (ans == 'y' || ans == 'Y')
-      appV3()
+      appV4()
   }
 
   /**
@@ -40,7 +42,7 @@ object HuffmanApp3 extends App {
    */
   def modeCodage(): Unit = {
     val (chemin, texte) = demanderFichier()
-    val txtEncode = encode(texte)
+    val txtEncode = encodeV4(texte)
     val l1 = texte.length() * 16
     val l2 = txtEncode.length()
     val compr = (l1 - l2) / l1.toFloat
@@ -59,7 +61,7 @@ object HuffmanApp3 extends App {
    */
   def modeDecodage(): Unit = {
     val (chemin, texte) = demanderFichier()
-    val txtDecode = decode(texte)
+    val txtDecode = decodeV4(texte)
 
     println("Le contenu décodé est :\n")
     println(txtDecode)
@@ -103,5 +105,5 @@ object HuffmanApp3 extends App {
     }
   }
 
-  appV3()
+  appV4()
 }

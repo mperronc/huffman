@@ -32,19 +32,19 @@ object Encodage {
   }
 
   /**
-   * @param l une liste de caractères
+   * @param lc une liste de caractères
    * @param h un arbre de Huffman
    * @return la séquence de bits correspondants à
    *         l'encodage selon h des éléments de l, s'il a réussi.
    *         Les caractères pour lesquels l'encodage est impossible sont oubliés
    */
-  def encodeList(l: List[Char], h: Huffman): List[Bit] = {
-    l match {
+  def encodeList(lc: List[Char], h: Huffman): List[Bit] = {
+    lc match {
       case Nil => Nil
-      case c :: tail => {
+      case c :: rem => {
         encodeSymbol(c, h) match {
-          case Some(l) => l ++ encodeList(tail, h)
-          case None    => encodeList(tail, h)
+          case Some(lb) => lb ++ encodeList(rem, h)
+          case None    => encodeList(rem, h)
         }
       }
     }

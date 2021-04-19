@@ -38,8 +38,7 @@ object HuffmanApp1 extends App {
   /**
    * Boucle d'interaction utilisateur
    */
-  @scala.annotation.tailrec
-  def boucleInteraction(): Unit = {
+  def appV1(): Unit = {
     println("Chaîne à encoder ?")
     val chaine = readLine()
 
@@ -68,8 +67,8 @@ object HuffmanApp1 extends App {
     println("Encore ? [Y/n]")
     val ans = readChar()
     if (ans == 'y' || ans == 'Y')
-      boucleInteraction()
+      appV1()
   }
 
-  boucleInteraction()
+  appV1()
 }

@@ -19,11 +19,10 @@ import java.io.FileNotFoundException
  */
 object HuffmanApp2 extends App {
 
-  @scala.annotation.tailrec /**
+  /**
    * Boucle d'interaction utilisateur
    */
-  def boucleInteraction(): Unit = {
-
+  def appV2(): Unit = {
     val (chemin, texte) = demanderFichier()
 
     println("Le contenu du fichier est :\n")
@@ -44,7 +43,7 @@ object HuffmanApp2 extends App {
     println("Encore ? [Y/n]")
     val ans = readChar()
     if (ans == 'y' || ans == 'Y')
-      boucleInteraction()
+      appV2()
   }
 
   /**
@@ -52,7 +51,6 @@ object HuffmanApp2 extends App {
    * de celui-ci. Réitère le demande si le fichier n'est pas trouvé.
    * @return le couple (chemin du fichier, contenu du fichier)
    */
-  @scala.annotation.tailrec
   def demanderFichier(): (String, String) = {
     println("Veuillez entrer le nom du fichier à encoder")
     val s = readLine()
@@ -66,6 +64,5 @@ object HuffmanApp2 extends App {
     }
   }
 
-  boucleInteraction()
-
+  appV2()
 }

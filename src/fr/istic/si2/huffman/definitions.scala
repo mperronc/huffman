@@ -20,3 +20,11 @@ sealed trait Huffman
 case class Feuille(freq: Double, c: Char) extends Huffman
 case class Noeud(freq: Double, zero: Huffman, one: Huffman) extends Huffman
 
+/**
+ * Type algébrique simple utilisé dans l'app V3 pour représenter le mode
+ * d'utilisation
+ */
+sealed trait Mode
+case object ModeCodage extends Mode
+case object ModeDecodage extends Mode
+

@@ -6,58 +6,60 @@
 
 package fr.istic.si2.huffman
 
-import fr.istic.si2.huffman.Utils._
+import Utils._
 
 object ConstructionCode {
 
   /**
-   * @param l une liste de couples caractère/fréquence
+   * @param lcd une liste de couples caractère/fréquence
    * @return la liste des arbres de Huffman réduits à des feuilles,
    *         un pour chaque élément de l
    */
-  def initHuffman(l: List[(Char, Double)]): List[Huffman] = {
-    l match {
-      case Nil            => Nil
-      case (c, f) :: tail => Feuille(f, c) :: initHuffman(tail)
+  def initHuffman(lcd: List[(Char, Double)]): List[Huffman] = {
+    lcd match {
+      case Nil           => Nil
+      case (c, f) :: rem => Feuille(f, c) :: initHuffman(rem)
     }
   }
 
   /**
-   * @param l une liste d'arbres de Huffman
+   * @param lh une liste d'arbres de Huffman
    * @return la liste des éléments de l, classée par ordre croissant des fréquences aux racines
    */
-  def triSelonFreq(l: List[Huffman]): List[Huffman] = {
-    def insert(h: Huffman, l: List[Huffman]): List[Huffman] = {
-      l match {
+  def triSelonFreq(lh: List[Huffman]): List[Huffman] = {
+    def insert(h: Huffman, lh: List[Huffman]): List[Huffman] = {
+      lh match {
         case Nil => h :: Nil
-        case head :: tail if extractFreq(h) < extractFreq(head) => h :: head :: tail
-        case head :: tail => head :: insert(h, tail)
+        case x :: rem => {
+          if (extractFreq(h) < extractFreq(x)) h :: x :: rem
+          else x :: insert(h, rem)
+        }
       }
     }
-    l match {
-      case Nil       => Nil
-      case h :: tail => insert(h, triSelonFreq(tail))
+    lh match {
+      case Nil      => Nil
+      case x :: rem => insert(x, triSelonFreq(rem))
     }
   }
 
   /**
-   * @param l une liste d'arbres de Huffman, de longueur au moins 2
+   * @param lh une liste d'arbres de Huffman, de longueur au moins 2
    * @return la liste obtenue après avoir fusionné les 2 arbres de l de fréquences minimales
    */
-  def uneFusion(l: List[Huffman]): List[Huffman] = {
-    val h1 :: h2 :: rem = triSelonFreq(l)
+  def uneFusion(lh: List[Huffman]): List[Huffman] = {
+    val h1 :: h2 :: rem = triSelonFreq(lh)
     Noeud(extractFreq(h1) + extractFreq(h2), h1, h2) :: rem
   }
 
   /**
-   * @param l une liste NON VIDE d'arbres de Huffman.
+   * @param lh une liste NON VIDE d'arbres de Huffman.
    * @return l'arbre de Huffman obtenu en fusionnant successivement,
    *         et 2 par 2, les arbres de l de fréquences minimales
    */
-  def fusion(l: List[Huffman]): Huffman = {
-    l match {
-      case n :: Nil => n
-      case _        => fusion(uneFusion(l))
+  def fusion(lh: List[Huffman]): Huffman = {
+    lh match {
+      case h :: Nil => h
+      case _        => fusion(uneFusion(lh))
     }
   }
 
@@ -75,8 +77,8 @@ object ConstructionCode {
    *         d'apparition dans s.
    */
   def analyseFrequences(s: String): List[(Char, Double)] = {
-    def aux(l: List[(Char, Int)]): List[(Char, Double)] = {
-      l match {
+    def aux(lci: List[(Char, Int)]): List[(Char, Double)] = {
+      lci match {
         case Nil           => Nil
         case (c, n) :: rem => (c, n / s.length.toDouble) :: aux(rem)
       }
@@ -86,7 +88,7 @@ object ConstructionCode {
 
   /**
    * @param lc Une liste de caractères
-   * @return la liste des couples (caractère, nombre d'occurences dans lc)
+   * @return la liste des couples (caractère présent dans lc, nombre d'occurences dans lc)
    */
   def compteOccurences(lc: List[Char]): List[(Char, Int)] = {
     def aux(lc: List[Char], acc: List[(Char, Int)]): List[(Char, Int)] = {
