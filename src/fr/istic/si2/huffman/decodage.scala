@@ -34,27 +34,23 @@ object Decodage {
       case (Noeud(_, h1, h2), One :: tail)  => decodeSymbol(h2, tail)
     }
   }
-
+  
   /**
    * @param l une liste de bits
    * @param h un arbre de Huffman
    * @return la chaîne correspondant au décodage de l, selon h, si elle existe
    */
   def decode(l: List[Bit], h: Huffman): Option[String] = {
-    l match {
-      case Nil => Some("")
-      case b :: tail => {
-        decodeSymbol(h, l) match {
-          case (Some(c), suffix) => {
-            decode(suffix, h) match {
-              case Some(s) => Some(c + s)
-              case None    => None
-            }
-          }
-          case (None, suffix) => None
+    def aux(l: List[Bit], h: Huffman, acc: String): Option[String] = {
+      l match {
+        case Nil => Some(acc)
+        case b :: tail => decodeSymbol(h, l) match {
+          case (Some(c), suffix) => aux(suffix, h, acc + c)
+          case (None, _) => None
         }
       }
     }
+    aux(l, h, "")
   }
 
   /**
@@ -63,26 +59,17 @@ object Decodage {
    *         - l'arbre de code de Huffman reconstruit à partir du début de l
    *         - le reste de la liste l, après la représentation de l'arbre de Huffman
    */
-  def lireDescription(l: List[Bit]): Option[(Huffman, List[Bit])] = {
-    // Construit l'arbre a partir de la description et compte le nombre de bits utilisés
-    def aux(l: List[Bit]): Option[(Huffman, Int)] = {
-      l match {
-        case Nil         => None
-        case Zero :: rem => Some((Feuille(0, toChar(listBitToString(rem.take(16)))), 17))
-        case One :: rem => {
-          aux(rem) match {
-            case Some((h1, n1)) => aux(rem.drop(n1)) match {
-              case Some((h2, n2)) => Some(Noeud(0, h1, h2), 1 + n1 + n2)
-              case None           => None
-            }
-            case None => None
-          }
-        }
+  def lireDescription(l: List[Bit]): (Huffman, List[Bit]) = {
+    l match {
+      case Zero :: rem => {
+        val c = toChar(listBitToString(rem.take(16)))
+        (Feuille(0, c), l.drop(17))
       }
-    }
-    aux(l) match {
-      case Some((h, n)) => Some((h, l.drop(n)))
-      case None         => None
+      case One :: rem => {
+        val (f1, rest1) = lireDescription(rem)
+        val (f2, rest2) = lireDescription(rest1)
+        (Noeud(0, f1, f2), rest2)
+      }
     }
   }
 
@@ -93,11 +80,9 @@ object Decodage {
    *         représenté en début de messageEnc
    */
   def decode(messageEnc: String): String = {
-    lireDescription(stringToListBit(messageEnc)) match {
-      case Some((h, l)) => decode(l, h) match {
-        case Some(s) => s
-        case None    => "Erreur"
-      }
+    val (h, l) = lireDescription(stringToListBit(messageEnc))
+    decode(l, h) match {
+      case Some(s) => s
       case None => "Erreur"
     }
   }

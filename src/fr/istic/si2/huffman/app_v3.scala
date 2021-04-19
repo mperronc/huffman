@@ -20,20 +20,23 @@ object HuffmanApp3 extends App {
 
     val (chemin, texte) = demanderFichier()
 
-    println("Le contenu du fichier est :\n")
-    println(texte + "\n")
+    //println("Le contenu du fichier est :\n")
+    //println(texte + "\n")
 
+    println("Encodage du texte en cours...")
     val texteEncode = encode(texte)
+    println("Terminé")
 
-    println("Le contenu encodé est :\n")
-    println(texteEncode + "\n")
+
+    //println("Le contenu encodé est :\n")
+    //println(texteEncode + "\n")
 
     println("Taille du texte original : " + texte.length() * 16 + " bits. (1 caractère = 16 bits)")
     println("Taille du texte encodé : " + texteEncode.length() + " bits.")
 
     val texteDecode = decode(texteEncode)
-    println("Le texte encodé, une fois décodé est :\n")
-    println(texteDecode + "\n")
+    //println("Le texte encodé, une fois décodé est :\n")
+    //println(texteDecode + "\n")
 
     println("Encore ? [Y/n]")
     val ans = readChar()

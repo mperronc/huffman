@@ -56,7 +56,6 @@ class TestsDecodage {
   def lireDescriptionTest() {
     val d1 = "1" + "0" + vers16Bits("a") + "0" + vers16Bits("b")
     val h1 = Noeud(0, Feuille(0, 'a'), Feuille(0, 'b'))
-    assertEquals(Some((h1, List())), lireDescription(stringToListBit(d1)))
-    assertEquals(None, lireDescription(stringToListBit(d1).dropRight(17)))
+    assertEquals((h1, List()), lireDescription(stringToListBit(d1)))
   }
 }

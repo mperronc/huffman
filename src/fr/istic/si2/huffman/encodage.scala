@@ -33,15 +33,18 @@ object Encodage {
    *         Les caractères pour lesquels l'encodage est impossible sont oubliés
    */
   def encodeList(l: List[Char], h: Huffman): List[Bit] = {
-    l match {
-      case Nil => Nil
-      case c :: tail => {
-        encodeSymbol(c, h) match {
-          case Some(l) => l ++ encodeList(tail, h)
-          case None    => encodeList(tail, h)
+    def aux(l: List[Char], h: Huffman, acc: List[Bit]): List[Bit] = {
+      l match {
+        case Nil => acc
+        case c :: tail => {
+          encodeSymbol(c, h) match {
+            case Some(l) => aux(tail, h, l.reverse ::: acc)
+            case None => aux(tail, h, acc)
+          }
         }
       }
     }
+    aux(l, h, Nil).reverse
   }
 
   /**
@@ -58,6 +61,7 @@ object Encodage {
    *         Les caractères encodables avec h sont représentés dans leur encodage binaire 16 bits.
    */
   def descriptionHuffman(h: Huffman): String = {
+    
     h match {
       case Noeud(_, h1, h2) => "1" + descriptionHuffman(h1) + descriptionHuffman(h2)
       case Feuille(_, c)    => "0" + vers16Bits(c.toString())

@@ -80,40 +80,23 @@ class TestsCode {
 
   @Test
   def analyseFrequencesTest() {
-    val s = "woof woof bork"  //wf bork
-    // L'ordre des tuples est un peu chelou parce que j'ai compteOccurences en tailrec mais ajouteUn en recursion normale 🙃
-    // Enfin je crois que ça vient de là ? 🤔
-    val fs = List(('k', 1 / 14.0), ('r', 1 / 14.0), ('b', 1 / 14.0), (' ', 2 / 14.0), ('f', 2 / 14.0), ('o', 5 / 14.0), ('w', 2 / 14.0))
-    assertEquals(fs, analyseFrequences(s))
+    val s = "woof woof bork"
+    val fs = List(('w', 2 / 14.0), ('o', 5 / 14.0), ('f', 2 / 14.0), (' ', 2 / 14.0), ('b', 1 / 14.0), ('r', 1 / 14.0), ('k', 1 / 14.0)).sortWith((t1, t2) => t1._1 < t2._1)
+    assertEquals(fs, analyseFrequences(s).sortWith((t1, t2) => t1._1 < t2._1))
   }
 
   @Test
   def compteOccurencesTest() {
     val s1 = "abc"
-    val occs1 = List(('c', 1), ('b', 1), ('a', 1))
+    val occs1 = Map('a' -> 1, 'b' -> 1, 'c' -> 1)
     assertEquals(occs1, compteOccurences(s1.toList))
     
     val s2 = "tttt"
-    val occs2 = List(('t', 4))
+    val occs2 = Map('t' -> 4)
     assertEquals(occs2, compteOccurences(s2.toList))
     
     val s3 = "abba"
-    val occs3 = List(('b', 2), ('a', 2))
+    val occs3 = Map('a' -> 2, 'b' -> 2)
     assertEquals(occs3, compteOccurences(s3.toList))
-  }
-
-  @Test
-  def apparaitTest() {
-    val s = "abcde".toList
-    assertEquals(true, apparait('a', s))
-    assertEquals(false, apparait('f', s))
-  }
-
-  @Test
-  def ajouteUnTest() {
-    val c = List(('a', 3), ('b', 4), ('c', 5))
-    val ajouteB = List(('a', 3), ('b', 5), ('c', 5))
-    assertEquals(ajouteB, ajouteUn('b', c))
-    assertEquals(c, ajouteUn('d', c))
   }
 }
