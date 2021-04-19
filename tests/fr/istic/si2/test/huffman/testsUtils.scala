@@ -33,4 +33,21 @@ class TestsUtils {
     assertEquals("", listBitToString(Nil))
     assertEquals("1101", listBitToString(List(One, One, Zero, One)))
   }
+
+  @Test
+  def takeTest() {
+    assertEquals(Nil, take(0, List(1, 2, 3)))
+    assertEquals(List(1), take(1, List(1, 2, 3)))
+    assertEquals(List(1, 2), take(2, List(1, 2, 3)))
+    assertEquals(List(1, 2, 3), take(3, List(1, 2, 3)))
+    assertEquals(List(1, 2, 3), take(4, List(1, 2, 3)))
+  }
+  
+  @Test
+  def dropTest() {
+    assertEquals(Nil, drop(3, List(1,2,3)))
+    assertEquals(List(3), drop(2, List(1,2,3)))
+    assertEquals(List(2,3), drop(1, List(1,2,3)))
+    assertEquals(List(1,2,3), drop(0, List(1,2,3)))
+  }
 }

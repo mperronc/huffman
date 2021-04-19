@@ -8,37 +8,55 @@ import ConstructionCode._
 import scala.io.StdIn._
 import java.io.FileNotFoundException
 
+sealed trait Mode
+case object ModeCodage extends Mode
+case object ModeDecodage extends Mode
+
 /**
  * Application principale V3 : avec transmission du code
  */
 object HuffmanApp3 extends App {
 
-  @scala.annotation.tailrec /**
-   * Boucle d'interaction utilisateur
+  /**
+   * Boucle d'interaction principale de l'App V3
    */
-  def boucleInteraction(): Unit = {
+  def appV3(): Unit = {
+    demanderMode() match {
+      case ModeCodage => modeCodage()
+      case ModeDecodage => modeDecodage()
+    }
 
-    val (chemin, texte) = demanderFichier()
-
-    println("Le contenu du fichier est :\n")
-    println(texte + "\n")
-
-    val texteEncode = encode(texte)
-
-    println("Le contenu encodé est :\n")
-    println(texteEncode + "\n")
-
-    println("Taille du texte original : " + texte.length() * 16 + " bits. (1 caractère = 16 bits)")
-    println("Taille du texte encodé : " + texteEncode.length() + " bits.")
-
-    val texteDecode = decode(texteEncode)
-    println("Le texte encodé, une fois décodé est :\n")
-    println(texteDecode + "\n")
-
-    println("Encore ? [Y/n]")
+    println("Encore une fois ? [Y/n]")
     val ans = readChar()
     if (ans == 'y' || ans == 'Y')
-      boucleInteraction()
+      appV3()
+  }
+  
+  /**
+   * Demande à l'utilisateur un chemin de fichier et encode son contenu dans un nouveau fichier au chemin
+   * donné suivi de ".code"
+   */
+  def modeCodage(): Unit = {
+    val (chemin, texte) = demanderFichier()
+    val txtEncode = encode(texte)
+    val l1 = texte.length() * 16
+    val l2 = txtEncode.length()
+    val compr = (l1 - l2) / l1.toFloat
+    
+    ecrireFichier(chemin + ".code", txtEncode)
+    
+    println("Le texte encodé à été écrit dans le fichier \"" + chemin + ".code\"")
+    println("Taille du fichier original : " + l1 + " bits.")
+    println("Taille du fichier encodé : " + l2 + " bits.")
+    println("Taux de compression : " + "%.2f".format(compr * 100.0) + "%.")
+  }
+  
+  def modeDecodage(): Unit = {
+    val (chemin, texte) = demanderFichier()
+    val txtDecode = decode(texte)
+    
+    ecrireFichier(chemin + ".decode", txtDecode)
+    println("Le texte décodé à été écrit dans le fichier \"" + chemin + ".decode\"")
   }
 
   /**
@@ -46,9 +64,8 @@ object HuffmanApp3 extends App {
    * de celui-ci. Réitère le demande si le fichier n'est pas trouvé.
    * @return le couple (chemin du fichier, contenu du fichier)
    */
-  @scala.annotation.tailrec
   def demanderFichier(): (String, String) = {
-    println("Veuillez entrer le nom du fichier à encoder")
+    println("Veuillez entrer un nom de fichier")
     val s = readLine()
     try {
       (s, lireFichier(s))
@@ -60,6 +77,21 @@ object HuffmanApp3 extends App {
     }
   }
 
-  boucleInteraction()
-
+  /**
+   * Demande à l'utilsateur de choisir le mode d'opération de l'application
+   * et réitère la demande jusqu'à otenir une réponse valide
+   * @return le mode d'operation choisi par l'utilisateur
+   */
+  def demanderMode(): Mode = {
+    println("Quel opération effectuer ?")
+    println("1. Encoder un fichier")
+    println("2. Decoder un fichier")
+    readChar() match {
+      case '1' => ModeCodage
+      case '2' => ModeDecodage
+      case _   => println("Entrée non valide"); demanderMode()
+    }
+  }
+  
+  appV3()
 }

@@ -58,13 +58,13 @@ class TestsCode {
     val h1 = Feuille(15, 'c')
     val h2 = Noeud(5, Feuille(2, 'a'), Feuille(3, 'b'))
     val fusionh1h2 = Noeud(20, h2, h1)
-    
+
     // Test que une fusion de passe bien
     assertEquals(List(fusionh1h2), uneFusion(List(h1, h2)))
 
     val h3 = Feuille(99, 'z')
     val h4 = Noeud(999, Feuille(990, 'x'), Feuille(9, 'y'))
-    
+
     // Test que le reste de la liste reste instact
     assertEquals(List(fusionh1h2, h3, h4), uneFusion(List(h1, h2, h3, h4)))
   }
@@ -80,7 +80,7 @@ class TestsCode {
 
   @Test
   def analyseFrequencesTest() {
-    val s = "woof woof bork"  //wf bork
+    val s = "woof woof bork" //wf bork
     // L'ordre des tuples est un peu chelou parce que j'ai compteOccurences en tailrec mais ajouteUn en recursion normale 🙃
     // Enfin je crois que ça vient de là ? 🤔
     val fs = List(('k', 1 / 14.0), ('r', 1 / 14.0), ('b', 1 / 14.0), (' ', 2 / 14.0), ('f', 2 / 14.0), ('o', 5 / 14.0), ('w', 2 / 14.0))
@@ -92,11 +92,11 @@ class TestsCode {
     val s1 = "abc"
     val occs1 = List(('c', 1), ('b', 1), ('a', 1))
     assertEquals(occs1, compteOccurences(s1.toList))
-    
+
     val s2 = "tttt"
     val occs2 = List(('t', 4))
     assertEquals(occs2, compteOccurences(s2.toList))
-    
+
     val s3 = "abba"
     val occs3 = List(('b', 2), ('a', 2))
     assertEquals(occs3, compteOccurences(s3.toList))
@@ -104,8 +104,10 @@ class TestsCode {
 
   @Test
   def apparaitTest() {
-    val s = "abcde".toList
+    val s = List(('a', 1), ('b', 1), ('c', 1))
     assertEquals(true, apparait('a', s))
+    assertEquals(true, apparait('b', s))
+    assertEquals(true, apparait('c', s))
     assertEquals(false, apparait('f', s))
   }
 

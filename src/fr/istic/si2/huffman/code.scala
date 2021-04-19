@@ -83,12 +83,11 @@ object ConstructionCode {
    * @return la liste des couples (caractère, nombre d'occurences dans lc)
    */
   def compteOccurences(lc: List[Char]): List[(Char, Int)] = {
-    @scala.annotation.tailrec // Tentative de faire marcher le code sur des gros fichiers mais il faut reecrire la plupart des fonctions en tailrec 🤡
     def aux(lc: List[Char], acc: List[(Char, Int)]): List[(Char, Int)] = {
       lc match {
         case Nil => acc
         case c :: rem => {
-          if (apparait(c, acc.map(t => t._1)))
+          if (apparait(c, acc))
             aux(rem, ajouteUn(c, acc))
           else
             aux(rem, (c, 1) :: acc)
@@ -103,10 +102,10 @@ object ConstructionCode {
    * @param lc Une liste de caractères
    * @return si le caractère c apparait dans la liste lc
    */
-  def apparait(c: Char, lc: List[Char]): Boolean = {
+  def apparait(c: Char, lc: List[(Char, Int)]): Boolean = {
     lc match {
       case Nil => false
-      case x :: rem => {
+      case (x, n) :: rem => {
         if (c == x) true
         else apparait(c, rem)
       }
