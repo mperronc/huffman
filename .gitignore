@@ -1,1 +1,4 @@
 /bin/
+.cache-main
+*.code
+*.decode

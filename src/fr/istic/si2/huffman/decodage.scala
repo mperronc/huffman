@@ -87,7 +87,7 @@ object Decodage {
     val (h, l) = lireDescription(stringToListBit(messageEnc))
     decode(l, h) match {
       case Some(s) => s
-      case None => "Erreur"
+      case None    => "Erreur"
     }
   }
 }

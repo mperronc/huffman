@@ -7,20 +7,34 @@ import org.junit.Assert._
 
 object Utils {
 
+  /**
+   * @tparam T Un type quelconque
+   * @param n Un entier positif ou nul
+   * @param l Une liste
+   * @return Les n premiers elements de la liste, ou toute la liste si la liste contient
+   * moins de n élements
+   */
   def take[T](n: Int, l: List[T]): List[T] = {
     (n, l) match {
       case (0, _) | (_, Nil) => Nil
-      case (_, x :: rem) => x :: take(n-1, rem)
+      case (_, x :: rem)     => x :: take(n - 1, rem)
     }
   }
-  
+
+  /**
+   * @tparam T Un type quelconque
+   * @param n Un entier positif ou nul
+   * @param l Une liste
+   * @return La liste sans ses n premiers elements, ou la liste vide si n contient
+   * moins de n elements.
+   */
   def drop[T](n: Int, l: List[T]): List[T] = {
     (n, l) match {
       case (0, _) | (_, Nil) => l
-      case (_, x :: rem) => drop(n-1, rem)
+      case (_, x :: rem)     => drop(n - 1, rem)
     }
   }
-  
+
   /**
    * @param l une liste de bits
    * @return la chaîne de 0 et 1 où chaque bit de l est représenté par 0 ou 1, dans l'ordre

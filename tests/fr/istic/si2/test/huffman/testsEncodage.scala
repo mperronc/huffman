@@ -28,7 +28,6 @@ class TestsEncodage {
           Feuille(0.07, 'f'), Feuille(0.06, 'g')),
         Feuille(0.09, 'e'))))
 
-
   @Test
   def encodeSymbolTest() {
     assertEquals(Some(List(Zero, Zero)), encodeSymbol('a', figure1))

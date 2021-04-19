@@ -22,7 +22,7 @@ object HuffmanApp3 extends App {
    */
   def appV3(): Unit = {
     demanderMode() match {
-      case ModeCodage => modeCodage()
+      case ModeCodage   => modeCodage()
       case ModeDecodage => modeDecodage()
     }
 
@@ -31,7 +31,7 @@ object HuffmanApp3 extends App {
     if (ans == 'y' || ans == 'Y')
       appV3()
   }
-  
+
   /**
    * Demande à l'utilisateur un chemin de fichier et encode son contenu dans un nouveau fichier au chemin
    * donné suivi de ".code"
@@ -42,19 +42,27 @@ object HuffmanApp3 extends App {
     val l1 = texte.length() * 16
     val l2 = txtEncode.length()
     val compr = (l1 - l2) / l1.toFloat
-    
+
     ecrireFichier(chemin + ".code", txtEncode)
-    
+
     println("Le texte encodé à été écrit dans le fichier \"" + chemin + ".code\"")
     println("Taille du fichier original : " + l1 + " bits.")
     println("Taille du fichier encodé : " + l2 + " bits.")
     println("Taux de compression : " + "%.2f".format(compr * 100.0) + "%.")
   }
-  
+
+  /**
+   * Demande à l'utilisateur un chemin de fichier et decode son contenu dans un nouveau fichier au chemin
+   * donné suivi de ".decode"
+   */
   def modeDecodage(): Unit = {
     val (chemin, texte) = demanderFichier()
     val txtDecode = decode(texte)
-    
+
+    println("Le contenu décodé est :\n")
+    println(txtDecode)
+    println()
+
     ecrireFichier(chemin + ".decode", txtDecode)
     println("Le texte décodé à été écrit dans le fichier \"" + chemin + ".decode\"")
   }
@@ -92,6 +100,6 @@ object HuffmanApp3 extends App {
       case _   => println("Entrée non valide"); demanderMode()
     }
   }
-  
+
   appV3()
 }

@@ -51,7 +51,7 @@ class TestsDecodage {
     assertEquals(Some("a"), decode(List(Zero, Zero), figure1))
     assertEquals(Some("gaffe"), decode(List(One, One, Zero, One, Zero, Zero, One, One, Zero, Zero, One, One, Zero, Zero, One, One, One), figure1))
   }
-  
+
   @Test
   def lireDescriptionTest() {
     val d1 = "1" + "0" + vers16Bits("a") + "0" + vers16Bits("b")

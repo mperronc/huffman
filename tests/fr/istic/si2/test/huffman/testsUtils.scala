@@ -42,12 +42,12 @@ class TestsUtils {
     assertEquals(List(1, 2, 3), take(3, List(1, 2, 3)))
     assertEquals(List(1, 2, 3), take(4, List(1, 2, 3)))
   }
-  
+
   @Test
   def dropTest() {
-    assertEquals(Nil, drop(3, List(1,2,3)))
-    assertEquals(List(3), drop(2, List(1,2,3)))
-    assertEquals(List(2,3), drop(1, List(1,2,3)))
-    assertEquals(List(1,2,3), drop(0, List(1,2,3)))
+    assertEquals(Nil, drop(3, List(1, 2, 3)))
+    assertEquals(List(3), drop(2, List(1, 2, 3)))
+    assertEquals(List(2, 3), drop(1, List(1, 2, 3)))
+    assertEquals(List(1, 2, 3), drop(0, List(1, 2, 3)))
   }
 }
